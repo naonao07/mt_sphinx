@@ -1,3 +1,10 @@
+import sys
+from pathlib import Path
+
+root_path = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(root_path.absolute()))     # Sphinxがライブラリを探索できるようにパスを追加
+
+
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -14,7 +21,7 @@ release = '2024'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.mathjax', 'sphinx.ext.todo', 'sphinx.ext.githubpages']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon','sphinx.ext.mathjax', 'sphinx.ext.todo', 'sphinx.ext.githubpages']
 
 templates_path = ['_templates']
 exclude_patterns = []
