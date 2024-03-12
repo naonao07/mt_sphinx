@@ -12,6 +12,7 @@
 
    modules
    test
+   solid_gas.rst
     
 
 Indices and tables
