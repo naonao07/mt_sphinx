@@ -10,10 +10,10 @@
    :maxdepth: 2
    :caption: Contents:
 
-   modules
-   test
-   solid_gas.rst
-    
+   FFgenerate
+   bulk_calc
+   solid_gas
+   
 
 Indices and tables
 ==================
