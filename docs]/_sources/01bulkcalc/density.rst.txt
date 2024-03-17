@@ -17,7 +17,6 @@
 
 `SPC water model <https://docs.lammps.org/Howto_spc.html>`_
 
-
 ::
 
     units real
