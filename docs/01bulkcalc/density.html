@@ -215,7 +215,7 @@
 <p>はじめに、計算する水分子のパラメータを設定します。</p>
 <p>今回はSPC/E力場パラメータを使って密度を計算してみましょう。</p>
 <p>水の力場とそれを使ったlammpsスクリプトがLAMMPSのマニュアルに記載があるので、この内容を参考にして書いていきます。</p>
-<p><a class="reference external" href="https://docs.lammps.org/Howto_spc.html">SPC water model</a></p>
+<p><a class="reference external" href="https://docs.lammps.org/Howto_spc.html">SPC water model (lammps ドキュメント)</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">units</span> <span class="n">real</span>
 <span class="n">atom_style</span> <span class="n">full</span>
 <span class="n">region</span> <span class="n">box</span> <span class="n">block</span> <span class="o">-</span><span class="mi">5</span> <span class="mi">5</span> <span class="o">-</span><span class="mi">5</span> <span class="mi">5</span> <span class="o">-</span><span class="mi">5</span> <span class="mi">5</span>
@@ -237,6 +237,35 @@
 <span class="n">angle_coeff</span> <span class="mi">1</span> <span class="mf">109.47</span>
 </pre></div>
 </div>
+<p>1行目はスクリプト内で使う単位系を設定しています。</p>
+<p>今回使っているrealという単位系は、例えば質量の単位が <span class="math notranslate nohighlight">\(g/mol\)</span> なので、7行目のmassコマンドで設定している数値は <span class="math notranslate nohighlight">\(15.9996 g/mol\)</span> を意味しています。
+<a class="reference external" href="https://docs.lammps.org/units.html">units (lammps ドキュメント)</a></p>
+<p>次に2行目ですが、これは原子一個一個にどんな値を設定できるか(atom_style)を決めています。このスクリプトでのatom_styleはfullなので、次のような数値を設定することが可能です。設定しなくても構いません。</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>atom-ID ：          各原子の名前</p></li>
+<li><p>type    ：          識別ID</p></li>
+<li><p>position ：         座標 x,y,z</p></li>
+<li><p>velosity ：         速度 vx,vy,vz</p></li>
+<li><p>force    ：         働く力 fx,fy,fz</p></li>
+<li><p>image-frags：       可視化のための数値データ</p></li>
+<li><p>mask       ：       所属するグループ名</p></li>
+<li><p>bond        ：      2原子間の力場パラメータデータ</p></li>
+<li><p>angle        ：     3原子間の力場パラメータデータ</p></li>
+<li><p>dihedral     ：     4原子間の力場パラメータデータ</p></li>
+<li><p>improper     ：     以上以外の構造における力場パラメータデータ</p></li>
+<li><p>charge      ：      各原子の電荷</p></li>
+</ul>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.lammps.org/atom_style.html">atom_style (lammps ドキュメント)</a></p>
+<p>このページでは特別な理由がない限り*unit real*を用いることにします。</p>
+<p>次に3行目、この行ではregionコマンドを使って計算するセルボックスの大きさを設定しています。この設定ではちょうど以下の画像で描いた領域が計算セルボックスになります。</p>
+<img alt="../_images/fig01.png" src="../_images/fig01.png" />
+<p>コードの意味は、左から</p>
+<p>region 領域名 領域の型 型に合わせた設定値</p>
+<p>となります。</p>
+<p><a class="reference external" href="https://docs.lammps.org/region.html">region (lammps ドキュメント)</a> を見ると</p>
+<p>次の4行目は、上で用意した計算セルにどれくらいの原子種(atom_type)、結合種(bond_type)、・・・を入れることにするかを設定しています。</p>
 </section>
 </section>
 
@@ -313,5 +342,6 @@
     <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../_static/translations.js?v=4dbe4bdc"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

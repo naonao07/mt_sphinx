@@ -35,4 +35,6 @@ html_theme = 'furo'
 html_title = "    "
 html_static_path = ['_static']
 html_logo = "https://github.com/naonao07/my_sphinx/_static/logo.png"
+#html_logo = "logo.png"
+
 
