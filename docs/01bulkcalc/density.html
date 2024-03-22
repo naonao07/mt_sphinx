@@ -217,32 +217,17 @@
 <p>水の力場とそれを使ったlammpsスクリプトがLAMMPSのマニュアルに記載があるので、この内容を参考にして書いていきます。</p>
 <p><a class="reference external" href="https://docs.lammps.org/Howto_spc.html">SPC water model (lammps ドキュメント)</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">units</span> <span class="n">real</span>
-<span class="n">atom_style</span> <span class="n">full</span>
-<span class="n">region</span> <span class="n">box</span> <span class="n">block</span> <span class="o">-</span><span class="mi">5</span> <span class="mi">5</span> <span class="o">-</span><span class="mi">5</span> <span class="mi">5</span> <span class="o">-</span><span class="mi">5</span> <span class="mi">5</span>
-<span class="n">create_box</span> <span class="mi">2</span> <span class="n">box</span>  <span class="n">bond</span><span class="o">/</span><span class="n">types</span> <span class="mi">1</span> <span class="n">angle</span><span class="o">/</span><span class="n">types</span> <span class="mi">1</span> <span class="o">&amp;</span>
-                <span class="n">extra</span><span class="o">/</span><span class="n">bond</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">2</span> <span class="n">extra</span><span class="o">/</span><span class="n">angle</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">1</span> <span class="n">extra</span><span class="o">/</span><span class="n">special</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">2</span>
-
-<span class="n">mass</span> <span class="mi">1</span> <span class="mf">15.9994</span>
-<span class="n">mass</span> <span class="mi">2</span> <span class="mf">1.008</span>
-
-<span class="n">pair_style</span> <span class="n">lj</span><span class="o">/</span><span class="n">cut</span><span class="o">/</span><span class="n">coul</span><span class="o">/</span><span class="n">cut</span> <span class="mf">10.0</span>
-<span class="n">pair_coeff</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mf">0.1553</span> <span class="mf">3.166</span>
-<span class="n">pair_coeff</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mf">0.0</span>    <span class="mf">1.0</span>
-<span class="n">pair_coeff</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mf">0.0</span>    <span class="mf">1.0</span>
-
-<span class="n">bond_style</span> <span class="n">zero</span>
-<span class="n">bond_coeff</span> <span class="mi">1</span> <span class="mf">1.0</span>
-
-<span class="n">angle_style</span> <span class="n">zero</span>
-<span class="n">angle_coeff</span> <span class="mi">1</span> <span class="mf">109.47</span>
 </pre></div>
 </div>
-<p>1行目はスクリプト内で使う単位系を設定しています。</p>
+<p>・1行目はスクリプト内で使う単位系を設定しています。</p>
 <p>今回使っているrealという単位系は、例えば質量の単位が <span class="math notranslate nohighlight">\(g/mol\)</span> なので、7行目のmassコマンドで設定している数値は <span class="math notranslate nohighlight">\(15.9996 g/mol\)</span> を意味しています。
 <a class="reference external" href="https://docs.lammps.org/units.html">units (lammps ドキュメント)</a></p>
-<p>次に2行目ですが、これは原子一個一個にどんな値を設定できるか(atom_style)を決めています。このスクリプトでのatom_styleはfullなので、次のような数値を設定することが可能です。設定しなくても構いません。</p>
-<blockquote>
-<div><ul class="simple">
+<p>・次に2行目ですが、これは原子一個一個にどんな値を設定できるか(atom_style)を決めています。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">atom_style</span> <span class="n">full</span>
+</pre></div>
+</div>
+<p>このスクリプトでのatom_styleはfullなので、次のような数値を設定することが可能です。設定しなくても構いません。</p>
+<ul class="simple">
 <li><p>atom-ID ：          各原子の名前</p></li>
 <li><p>type    ：          識別ID</p></li>
 <li><p>position ：         座標 x,y,z</p></li>
@@ -256,16 +241,302 @@
 <li><p>improper     ：     以上以外の構造における力場パラメータデータ</p></li>
 <li><p>charge      ：      各原子の電荷</p></li>
 </ul>
-</div></blockquote>
 <p><a class="reference external" href="https://docs.lammps.org/atom_style.html">atom_style (lammps ドキュメント)</a></p>
 <p>このページでは特別な理由がない限り*unit real*を用いることにします。</p>
-<p>次に3行目、この行ではregionコマンドを使って計算するセルボックスの大きさを設定しています。この設定ではちょうど以下の画像で描いた領域が計算セルボックスになります。</p>
+<p>・次に3行目、この行ではregionコマンドを使って水分子を配置するボックスの大きさを設定しています。この設定ではちょうど以下の画像で描いた領域が計算セルボックスになります。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">region</span> <span class="n">box</span> <span class="n">block</span> <span class="o">-</span><span class="mi">10</span> <span class="mi">10</span> <span class="o">-</span><span class="mi">10</span> <span class="mi">10</span> <span class="o">-</span><span class="mi">10</span> <span class="mi">10</span>
+</pre></div>
+</div>
 <img alt="../_images/fig01.png" src="../_images/fig01.png" />
 <p>コードの意味は、左から</p>
 <p>region 領域名 領域の型 型に合わせた設定値</p>
-<p>となります。</p>
-<p><a class="reference external" href="https://docs.lammps.org/region.html">region (lammps ドキュメント)</a> を見ると</p>
-<p>次の4行目は、上で用意した計算セルにどれくらいの原子種(atom_type)、結合種(bond_type)、・・・を入れることにするかを設定しています。</p>
+<p>となります。
+<a class="reference external" href="https://docs.lammps.org/region.html">region (lammps ドキュメント)</a> を見ると、領域の型はcylinderやsphereを選べるようなので、水分子の集団を球で配置したい場合はsphereを使うということになります。
+block,sphere,cylinderそれぞれの設定にした場合、次のような初期配置を作ることが出来ます。</p>
+<img alt="../_images/fig_region.png" src="../_images/fig_region.png" />
+<p>・次の4行目は、”計算セル”どれくらいの原子種(atom_type)、結合種(bond_type)、・・・を入れることにするかを設定しています。このcreate_boxコマンドはregionコマンドで作成した領域を使いますが、今回は3行目で作成したboxという領域を使っています。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">create_box</span> <span class="mi">2</span> <span class="n">box</span>  <span class="n">bond</span><span class="o">/</span><span class="n">types</span> <span class="mi">1</span> <span class="n">angle</span><span class="o">/</span><span class="n">types</span> <span class="mi">1</span> <span class="o">&amp;</span>
+            <span class="n">extra</span><span class="o">/</span><span class="n">bond</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">2</span> <span class="n">extra</span><span class="o">/</span><span class="n">angle</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">1</span> <span class="n">extra</span><span class="o">/</span><span class="n">special</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>コマンドの意味は</p>
+<p>create_box 原子種の数 領域名 bond/types 結合数 angle/types 角度の数 (必要ならば dihedral/types 二面角の数 improper/types その他の結合の数)</p>
+<p>を表します。（extra/...はまだ理解してません。。。）</p>
+<p>・次に力場の形式とパラメータを設定しています。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mass</span> <span class="mi">1</span> <span class="mf">15.9994</span> <span class="c1">#質量の設定</span>
+<span class="n">mass</span> <span class="mi">2</span> <span class="mf">1.008</span>
+
+<span class="n">pair_style</span> <span class="n">lj</span><span class="o">/</span><span class="n">cut</span><span class="o">/</span><span class="n">coul</span><span class="o">/</span><span class="n">long</span> <span class="mf">10.0</span>  <span class="c1">#原子同士の結合力の設定</span>
+<span class="n">bond_style</span> <span class="n">zero</span>  <span class="c1">#2原子間の結合力</span>
+<span class="n">angle_style</span> <span class="n">zero</span>  <span class="c1">#3原子間の結合力</span>
+<span class="n">kspace_style</span> <span class="n">pppm</span> <span class="mf">1e-6</span>
+
+<span class="c1"># 力場パラメータ</span>
+<span class="n">pair_coeff</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mf">0.1553</span> <span class="mf">3.166</span>
+<span class="n">pair_coeff</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mf">0.0</span>    <span class="mf">1.0</span>
+<span class="n">pair_coeff</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mf">0.0</span>    <span class="mf">1.0</span>
+<span class="n">bond_coeff</span> <span class="mi">1</span> <span class="mf">1.0</span>
+<span class="n">angle_coeff</span> <span class="mi">1</span> <span class="mf">109.47</span>
+</pre></div>
+</div>
+<p>これだけでは水分子の原子の位置などがまだ定義されていません。原子の位置的な情報は以下のテキストをspc.molとして保存しておきます。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Water molecule. SPC/E geometry</span>
+
+<span class="mi">3</span> <span class="n">atoms</span>
+<span class="mi">2</span> <span class="n">bonds</span>
+<span class="mi">1</span> <span class="n">angles</span>
+
+<span class="n">Coords</span>
+
+<span class="mi">1</span>    <span class="mf">0.00000</span>  <span class="o">-</span><span class="mf">0.06461</span>   <span class="mf">0.00000</span>
+<span class="mi">2</span>    <span class="mf">0.81649</span>   <span class="mf">0.51275</span>   <span class="mf">0.00000</span>
+<span class="mi">3</span>   <span class="o">-</span><span class="mf">0.81649</span>   <span class="mf">0.51275</span>   <span class="mf">0.00000</span>
+
+<span class="n">Types</span>
+
+<span class="mi">1</span>        <span class="mi">1</span>   <span class="c1"># O</span>
+<span class="mi">2</span>        <span class="mi">2</span>   <span class="c1"># H</span>
+<span class="mi">3</span>        <span class="mi">2</span>   <span class="c1"># H</span>
+
+<span class="n">Charges</span>
+
+<span class="mi">1</span>       <span class="o">-</span><span class="mf">0.8476</span>
+<span class="mi">2</span>        <span class="mf">0.4238</span>
+<span class="mi">3</span>        <span class="mf">0.4238</span>
+
+<span class="n">Bonds</span>
+
+<span class="mi">1</span>   <span class="mi">1</span>      <span class="mi">1</span>      <span class="mi">2</span>
+<span class="mi">2</span>   <span class="mi">1</span>      <span class="mi">1</span>      <span class="mi">3</span>
+
+<span class="n">Angles</span>
+
+<span class="mi">1</span>   <span class="mi">1</span>      <span class="mi">2</span>      <span class="mi">1</span>      <span class="mi">3</span>
+
+<span class="n">Shake</span> <span class="n">Flags</span>
+
+<span class="mi">1</span> <span class="mi">1</span>
+<span class="mi">2</span> <span class="mi">1</span>
+<span class="mi">3</span> <span class="mi">1</span>
+
+<span class="n">Shake</span> <span class="n">Atoms</span>
+
+<span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>
+<span class="mi">2</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>
+<span class="mi">3</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>
+
+<span class="n">Shake</span> <span class="n">Bond</span> <span class="n">Types</span>
+
+<span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span>
+<span class="mi">2</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span>
+<span class="mi">3</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span>
+
+<span class="n">Special</span> <span class="n">Bond</span> <span class="n">Counts</span>
+
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="mi">2</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span>
+<span class="mi">3</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span>
+
+<span class="n">Special</span> <span class="n">Bonds</span>
+
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>
+<span class="mi">2</span> <span class="mi">1</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2>水分子の空間配置<a class="headerlink" href="#id3" title="この見出しへのパーマリンク">#</a></h2>
+<p>ここまでで水分子については設定出来たので、続いて水分子を領域に配置しましょう。スクリプトファイルにコマンドを書き加えていきます。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">molecule</span> <span class="n">water</span> <span class="n">spce</span><span class="o">.</span><span class="n">mol</span>
+<span class="n">create_atoms</span> <span class="mi">0</span> <span class="n">random</span> <span class="mi">300</span> <span class="mi">34564</span> <span class="n">NULL</span> <span class="n">mol</span> <span class="n">water</span> <span class="mi">25367</span> <span class="n">overlap</span> <span class="mf">1.33</span>
+</pre></div>
+</div>
+<p>・moleculeコマンドで水分子の位置情報をspce.molファイルから読み取ってwaterという名前をつけています。</p>
+<p>・create_atomsコマンドで実際にある領域に分子を配置します。この一行で挿入する分子の数、挿入する領域、挿入する分子、重ならない距離の設定を行っています。コマンド内で何を設定しているかはドキュメントを見るのが最もわかりわすいと思います。</p>
+<p><a class="reference external" href="https://docs.lammps.org/create_atoms.html">create_atoms(lammpsドキュメント)</a></p>
+<p>今回のコードでは領域を設定する箇所がNULLとなっており、先程設定したcreate_boxコマンドで作った計算領域全体に水分子が配置されます。しかし、ここで新たに用意した領域を使うと空間の一部に配置することも可能です。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">units</span> <span class="n">real</span>
+<span class="n">atom_style</span> <span class="n">full</span>
+<span class="n">region</span> <span class="n">box</span> <span class="n">block</span> <span class="o">-</span><span class="mi">20</span> <span class="mi">20</span> <span class="o">-</span><span class="mi">20</span> <span class="mi">20</span> <span class="o">-</span><span class="mi">20</span> <span class="mi">20</span>
+<span class="n">region</span> <span class="n">sphere</span> <span class="n">sphere</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">10</span> <span class="n">side</span> <span class="ow">in</span>
+<span class="c1">#region cylinder cylinder z 0 0 4 -10 10 side in</span>
+
+<span class="n">create_box</span> <span class="mi">2</span> <span class="n">box</span> <span class="n">bond</span><span class="o">/</span><span class="n">types</span> <span class="mi">1</span> <span class="n">angle</span><span class="o">/</span><span class="n">types</span> <span class="mi">1</span> <span class="o">&amp;</span>
+                <span class="n">extra</span><span class="o">/</span><span class="n">bond</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">2</span> <span class="n">extra</span><span class="o">/</span><span class="n">angle</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">1</span> <span class="n">extra</span><span class="o">/</span><span class="n">special</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">2</span>
+
+<span class="o">~~~</span>
+<span class="o">~~~</span>
+
+<span class="n">molecule</span> <span class="n">water</span> <span class="n">spce</span><span class="o">.</span><span class="n">mol</span>
+<span class="n">create_atoms</span> <span class="mi">0</span> <span class="n">random</span> <span class="mi">100</span> <span class="mi">34564</span> <span class="n">sphere</span> <span class="n">mol</span> <span class="n">water</span> <span class="mi">25367</span> <span class="n">overlap</span> <span class="mf">1.5</span>
+</pre></div>
+</div>
+<img alt="../_images/fig06.png" src="../_images/fig06.png" />
+<p>ここまでで水分子の空間配置が完了しました。一度スクリプト全体を見てみます。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">units</span> <span class="n">real</span>
+<span class="n">atom_style</span> <span class="n">full</span>
+<span class="n">region</span> <span class="n">box</span> <span class="n">block</span> <span class="o">-</span><span class="mi">5</span> <span class="mi">5</span> <span class="o">-</span><span class="mi">5</span> <span class="mi">5</span> <span class="o">-</span><span class="mi">5</span> <span class="mi">5</span>
+<span class="n">create_box</span> <span class="mi">2</span> <span class="n">box</span>  <span class="n">bond</span><span class="o">/</span><span class="n">types</span> <span class="mi">1</span> <span class="n">angle</span><span class="o">/</span><span class="n">types</span> <span class="mi">1</span> <span class="o">&amp;</span>
+                <span class="n">extra</span><span class="o">/</span><span class="n">bond</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">2</span> <span class="n">extra</span><span class="o">/</span><span class="n">angle</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">1</span> <span class="n">extra</span><span class="o">/</span><span class="n">special</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">2</span>
+
+<span class="n">mass</span> <span class="mi">1</span> <span class="mf">15.9994</span> <span class="c1">#質量の設定</span>
+<span class="n">mass</span> <span class="mi">2</span> <span class="mf">1.008</span>
+
+<span class="n">pair_style</span> <span class="n">lj</span><span class="o">/</span><span class="n">cut</span><span class="o">/</span><span class="n">coul</span><span class="o">/</span><span class="n">long</span> <span class="mf">10.0</span>  <span class="c1">#原子同士の結合力の設定</span>
+<span class="n">bond_style</span> <span class="n">zero</span>  <span class="c1">#2原子間の結合力</span>
+<span class="n">angle_style</span> <span class="n">zero</span>  <span class="c1">#3原子間の結合力</span>
+<span class="n">kspace_style</span> <span class="n">pppm</span> <span class="mf">1e-6</span>
+
+<span class="c1"># 力場パラメータ</span>
+<span class="n">pair_coeff</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mf">0.1553</span> <span class="mf">3.166</span>
+<span class="n">pair_coeff</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mf">0.0</span>    <span class="mf">1.0</span>
+<span class="n">pair_coeff</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mf">0.0</span>    <span class="mf">1.0</span>
+<span class="n">bond_coeff</span> <span class="mi">1</span> <span class="mf">1.0</span>
+<span class="n">angle_coeff</span> <span class="mi">1</span> <span class="mf">109.47</span>
+
+<span class="n">molecule</span> <span class="n">water</span> <span class="n">spce</span><span class="o">.</span><span class="n">mol</span>
+<span class="n">create_atoms</span> <span class="mi">0</span> <span class="n">random</span> <span class="mi">33</span> <span class="mi">34564</span> <span class="n">NULL</span> <span class="n">mol</span> <span class="n">water</span> <span class="mi">25367</span> <span class="n">overlap</span> <span class="mf">1.33</span>
+</pre></div>
+</div>
+</section>
+<section id="md">
+<h2>MD計算の設定<a class="headerlink" href="#md" title="この見出しへのパーマリンク">#</a></h2>
+<p>・続いて計算タイムステップを設定します。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">timestep</span> <span class="mf">1.0</span>
+</pre></div>
+</div>
+<p>今単位系はrealなので時間の単位はフェムト秒です。したがって時間ステップは1フェムト秒と設定していることを意味しています。</p>
+<p>・次に水分子のOH振動とHOH偏角の運動を固定します。今回使用したSPCモデルはこの固定をした上でチューニングされているそうです。</p>
+<p>その証拠に、先に設定した結合と角度のパラメータには距離と角度の値しかなく、振動中心のようなその他のパラメータはありません。</p>
+<p>shakeアルゴリズム（ <a class="reference external" href="https://docs.lammps.org/fix_shake.html">shake(lammpsドキュメント)</a> ）を用いることで結合と角度を固定出来ます。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fix</span> <span class="n">water_fix</span> <span class="nb">all</span> <span class="n">shake</span> <span class="mf">0.0001</span> <span class="mi">10</span> <span class="mi">1000</span> <span class="n">b</span> <span class="mi">1</span> <span class="n">a</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>コマンド内の b 1 a 1 は結合の1番目、角度1番目を固定するとこを示しています。</p>
+<p>・NPT計算の設定を行います。ここでは全ての原子の平均温度が300Kに、圧力を1stmに温度調整・圧力調整する設定になっています。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fix</span> <span class="n">integrate</span> <span class="nb">all</span> <span class="n">npt</span> <span class="n">temp</span> <span class="mf">300.0</span> <span class="mf">300.0</span> <span class="mf">100.0</span> <span class="n">iso</span> <span class="mf">1.0</span> <span class="mf">1.0</span> <span class="mf">1000.0</span>
+</pre></div>
+</div>
+<p>・分子の運動を記録するために、トラジェクトリを記録する設定を行います。全てno原子のトラジェクトリを100ステップごとにdump.lammpstrjというファイルに出力する設定になっています。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dump</span> <span class="n">myDump</span> <span class="nb">all</span> <span class="n">atom</span> <span class="mi">100</span> <span class="n">dump</span><span class="o">.</span><span class="n">lammpstrj</span>
+</pre></div>
+</div>
+<p>・log.lammpsファイルにおける出力する数値を設定します。右から時間ステップ数、温度、圧力、全エネルギー、密度、ポテンシャルエネルギー、運動エネルギー
+です。つまりここで密度の時系列データが出力できることになります。</p>
+<p>thermo 1000 とは100ステップごとに上記の値を出力することを示しています。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">thermo_style</span> <span class="n">custom</span> <span class="n">step</span> <span class="n">temp</span> <span class="n">press</span> <span class="n">etotal</span> <span class="n">density</span> <span class="n">pe</span> <span class="n">ke</span>
+<span class="n">thermo</span> <span class="mi">100</span>
+</pre></div>
+</div>
+<p>・計算ステップ数を設定します。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">run</span> <span class="mi">20000</span>
+</pre></div>
+</div>
+<p>・最後に計算後の系を出力します。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">write_data</span> <span class="n">spce</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+<p>ここまでで密度を計算するためのスクリプトが出来ました。</p>
+<p>完成したものを以下に表示します。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">units</span> <span class="n">real</span>
+<span class="n">atom_style</span> <span class="n">full</span>
+<span class="n">region</span> <span class="n">box</span> <span class="n">block</span> <span class="o">-</span><span class="mi">10</span> <span class="mi">10</span> <span class="o">-</span><span class="mi">10</span> <span class="mi">10</span> <span class="o">-</span><span class="mi">10</span> <span class="mi">10</span>
+<span class="n">create_box</span> <span class="mi">2</span> <span class="n">box</span>  <span class="n">bond</span><span class="o">/</span><span class="n">types</span> <span class="mi">1</span> <span class="n">angle</span><span class="o">/</span><span class="n">types</span> <span class="mi">1</span> <span class="o">&amp;</span>
+                <span class="n">extra</span><span class="o">/</span><span class="n">bond</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">2</span> <span class="n">extra</span><span class="o">/</span><span class="n">angle</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">1</span> <span class="n">extra</span><span class="o">/</span><span class="n">special</span><span class="o">/</span><span class="n">per</span><span class="o">/</span><span class="n">atom</span> <span class="mi">2</span>
+
+<span class="n">mass</span> <span class="mi">1</span> <span class="mf">15.9994</span> <span class="c1">#質量の設定</span>
+<span class="n">mass</span> <span class="mi">2</span> <span class="mf">1.008</span>
+
+<span class="n">pair_style</span> <span class="n">lj</span><span class="o">/</span><span class="n">cut</span><span class="o">/</span><span class="n">coul</span><span class="o">/</span><span class="n">long</span> <span class="mf">10.0</span>  <span class="c1">#原子同士の結合力の設定</span>
+<span class="n">bond_style</span> <span class="n">zero</span>  <span class="c1">#2原子間の結合力</span>
+<span class="n">angle_style</span> <span class="n">zero</span>  <span class="c1">#3原子間の結合力</span>
+<span class="n">kspace_style</span> <span class="n">pppm</span> <span class="mf">1e-6</span>
+
+<span class="c1"># 力場パラメータ</span>
+<span class="n">pair_coeff</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mf">0.1553</span> <span class="mf">3.166</span>
+<span class="n">pair_coeff</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mf">0.0</span>    <span class="mf">1.0</span>
+<span class="n">pair_coeff</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mf">0.0</span>    <span class="mf">1.0</span>
+<span class="n">bond_coeff</span> <span class="mi">1</span> <span class="mf">1.0</span>
+<span class="n">angle_coeff</span> <span class="mi">1</span> <span class="mf">109.47</span>
+
+<span class="n">molecule</span> <span class="n">water</span> <span class="n">spce</span><span class="o">.</span><span class="n">mol</span>
+<span class="n">create_atoms</span> <span class="mi">0</span> <span class="n">random</span> <span class="mi">300</span> <span class="mi">34564</span> <span class="n">NULL</span> <span class="n">mol</span> <span class="n">water</span> <span class="mi">25367</span> <span class="n">overlap</span> <span class="mf">1.33</span>
+
+<span class="n">timestep</span> <span class="mf">1.0</span>
+<span class="n">minimize</span> <span class="mf">0.0</span> <span class="mf">0.0</span> <span class="mi">1000</span> <span class="mi">10000</span>
+<span class="n">fix</span> <span class="n">integrate</span> <span class="nb">all</span> <span class="n">npt</span> <span class="n">temp</span> <span class="mf">300.0</span> <span class="mf">300.0</span> <span class="mf">100.0</span> <span class="n">iso</span> <span class="mf">1.0</span> <span class="mf">1.0</span> <span class="mf">1000.0</span>
+
+<span class="n">dump</span> <span class="n">myDump</span> <span class="nb">all</span> <span class="n">atom</span> <span class="mi">100</span> <span class="n">dump</span><span class="o">.</span><span class="n">lammpstrj</span>
+
+<span class="n">thermo_style</span> <span class="n">custom</span> <span class="n">step</span> <span class="n">temp</span> <span class="n">press</span> <span class="n">etotal</span> <span class="n">density</span> <span class="n">pe</span> <span class="n">ke</span>
+<span class="n">thermo</span> <span class="mi">100</span>
+<span class="n">run</span> <span class="mi">20000</span>
+
+<span class="n">write_data</span> <span class="n">spce</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+<p>このコードを実行すると密度はこのような変動をします。</p>
+<img alt="../_images/density.png" src="../_images/density.png" />
+<p>計算時間を100000ステップにするとこんな感じ。</p>
+<img alt="../_images/density_2.png" src="../_images/density_2.png" />
+</section>
+<section id="id4">
+<h2>補足<a class="headerlink" href="#id4" title="この見出しへのパーマリンク">#</a></h2>
+<p>上のプロットに使用したpythonコード</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;log.lammps&#39;</span>
+
+<span class="c1"># Read the file and display the first few lines to understand its structure</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+<span class="c1"># Define the start and end markers</span>
+<span class="n">start_marker</span> <span class="o">=</span> <span class="s2">&quot;Step&quot;</span>
+<span class="n">end_marker</span> <span class="o">=</span> <span class="s2">&quot;Loop time of&quot;</span>
+
+<span class="c1"># Initialize flags and container for the relevant lines</span>
+<span class="n">capture</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">relevant_lines</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Iterate through each line to capture the relevant part</span>
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">start_marker</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+        <span class="n">capture</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="n">end_marker</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+        <span class="n">capture</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">break</span>  <span class="c1"># Stop capturing after finding the end marker and do not include this line</span>
+    <span class="k">if</span> <span class="n">capture</span><span class="p">:</span>
+        <span class="n">relevant_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># Path for the new file to save the extracted content</span>
+<span class="n">output_file_path</span> <span class="o">=</span> <span class="s1">&#39;log.dat&#39;</span>
+
+<span class="c1"># Save the extracted lines to the new file</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_file</span><span class="p">:</span>
+    <span class="n">output_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">relevant_lines</span><span class="p">)</span>
+
+<span class="c1"># Provide the path to the saved file</span>
+
+
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">output_file_path</span>
+<span class="n">data_with_header_updated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># Extracting the updated column names for labels</span>
+<span class="n">updated_column_names</span> <span class="o">=</span> <span class="n">data_with_header_updated</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
+
+<span class="c1"># Re-plotting with the updated columns</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data_with_header_updated</span><span class="p">[</span><span class="n">updated_column_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">data_with_header_updated</span><span class="p">[</span><span class="n">updated_column_names</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Plot of </span><span class="si">{</span><span class="n">updated_column_names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> from log.dat&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">updated_column_names</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">updated_column_names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot; g/cm^3&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -326,6 +597,9 @@
             <ul>
 <li><a class="reference internal" href="#">密度の算出方法</a><ul>
 <li><a class="reference internal" href="#id2">水分子の用意</a></li>
+<li><a class="reference internal" href="#id3">水分子の空間配置</a></li>
+<li><a class="reference internal" href="#md">MD計算の設定</a></li>
+<li><a class="reference internal" href="#id4">補足</a></li>
 </ul>
 </li>
 </ul>
