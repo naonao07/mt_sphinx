@@ -12,7 +12,9 @@
 
    FFgenerate
    bulk_calc
+   liquid_gas
    solid_gas
+   
    
 
 Indices and tables

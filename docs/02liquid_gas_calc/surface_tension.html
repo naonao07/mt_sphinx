@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="固気界面の計算方法" href="../solid_gas.html" /><link rel="prev" title="密度の算出方法" href="density.html" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="蒸発現象" href="evaporation.html" /><link rel="prev" title="気液界面の状態解析" href="../liquid_gas.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
-        <title>拡散係数の算出方法 - </title>
+        <title>表面張力の算出 - </title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -164,12 +164,19 @@
 <li class="toctree-l2"><a class="reference internal" href="../FFgenerate/packmol.html">packmol</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../bulk_calc.html">液体のバルク状態解析</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of 液体のバルク状態解析</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="density.html">密度の算出方法</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">拡散係数の算出方法</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../bulk_calc.html">液体のバルク状態解析</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of 液体のバルク状態解析</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../01bulkcalc/density.html">密度の算出方法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01bulkcalc/duffusion_coeff.html">拡散係数の算出方法</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../solid_gas.html">固気界面の計算方法</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 固気界面の計算方法</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../liquid_gas.html">気液界面の状態解析</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 気液界面の状態解析</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">表面張力の算出</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaporation.html">蒸発現象</a></li>
+<li class="toctree-l2"><a class="reference internal" href="condensation.html">凝縮計算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="humidity.html">湿度と気液界面</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../solid_gas.html">固気界面の計算方法</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 固気界面の計算方法</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
 </ul>
@@ -207,8 +214,8 @@
         </div>
         <article role="main">
           <section id="id1">
-<h1>拡散係数の算出方法<a class="headerlink" href="#id1" title="この見出しへのパーマリンク">#</a></h1>
-<p>水のなかに低分子が入っているときの拡散係数を計算します。</p>
+<h1>表面張力の算出<a class="headerlink" href="#id1" title="この見出しへのパーマリンク">#</a></h1>
+<p>表面張力の算出にはいくつか方法があります。系の圧力テンソルから計算する方法やKirkwood-Buff積分を使用する方法などです。今回はこの2種類の方法で水の</p>
 </section>
 
         </article>
@@ -216,23 +223,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../solid_gas.html">
+          <a class="next-page" href="evaporation.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">固気界面の計算方法</div>
+                <div class="title">蒸発現象</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="density.html">
+          <a class="prev-page" href="../liquid_gas.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">密度の算出方法</div>
+                <div class="title">気液界面の状態解析</div>
                 
               </div>
             </a>
